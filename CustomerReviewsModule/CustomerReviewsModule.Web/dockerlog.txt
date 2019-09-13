@@ -1,0 +1,68 @@
+Starting up container(s)...
+docker build -f "E:\Data\VirtoCommerce\mvktsk\DockerNetNativeWebApplication\DockerNetNativeWebApplication\Dockerfile" -t dockernetnativewebapplication:dev --build-arg "source=obj\Docker\empty" --label "com.microsoft.created-by=visual-studio" --label "com.microsoft.visual-studio.project-name=DockerNetNativeWebApplication" "E:\Data\VirtoCommerce\mvktsk\DockerNetNativeWebApplication\DockerNetNativeWebApplication" 
+
+docker run -dt -v "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Remote Debugger:C:\remote_debugger:ro" -v "E:\Data\VirtoCommerce\mvktsk\DockerNetNativeWebApplication\DockerNetNativeWebApplication:C:\inetpub\wwwroot" -e "DEV_ENVIRONMENT=1" -e "VBCSCOMPILER_TTL=604800" -P --entrypoint cmd dockernetnativewebapplication:dev /c "start /B C:\ServiceMonitor.exe w3svc & C:\remote_debugger\x64\msvsmon.exe /noauth /anyuser /silent /nostatus /noclrwarn /nosecuritywarn /nofirewallwarn /nowowwarn /fallbackloadremotemanagedpdbs /timeout:2147483646" 
+
+
+Getting Docker containers ready...
+docker-compose  -f "E:\Data\VirtoCommerce\mvktsk\CustomerReviewsModule\docker-compose.yml" -f "E:\Data\VirtoCommerce\mvktsk\CustomerReviewsModule\docker-compose.override.yml" -f "E:\Data\VirtoCommerce\mvktsk\CustomerReviewsModule\obj\Docker\docker-compose.vs.debug.g.yml" -p dockercompose5837218014806194880 --no-ansi config
+networks:
+  default:
+    external:
+      name: nat
+  virto:
+    external:
+      name: nat
+services:
+  customerreviewsmodule.web:
+    build:
+      args:
+        source: obj/Docker/empty/
+      context: E:\Data\VirtoCommerce\mvktsk\CustomerReviewsModule\CustomerReviewsModule\CustomerReviewsModule.Web
+      dockerfile: Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: CustomerReviewsModule.Web
+    depends_on:
+    - vc-db
+    entrypoint: cmd /c "start /B C:\\ServiceMonitor.exe w3svc & C:\\remote_debugger\\x64\\msvsmon.exe
+      /noauth /anyuser /silent /nostatus /noclrwarn /nosecuritywarn /nofirewallwarn
+      /nowowwarn /timeout:2147483646"
+    environment:
+      VIRTO_CONN_STR_AssetsConnectionString: provider=LocalStorage;rootPath=~/App_Data/Assets;publicUrl=http://localhost:8090/assets
+      VIRTO_CONN_STR_VIRTOCOMMERCE: Data Source=vc-db;Initial Catalog=VirtoCommerce2;Persist
+        Security Info=True;User ID=sa;Password=v!rto_Labs!;MultipleActiveResultSets=True;Connect
+        Timeout=30;
+    image: customerreviewsmoduleweb:dev
+    networks:
+      virto: {}
+    ports:
+    - target: 80
+    volumes:
+    - E:\Data\VirtoCommerce\mvktsk\CustomerReviewsModule\CustomerReviewsModule\CustomerReviewsModule.Web:C:\inetpub\wwwroot:rw
+    - C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Remote
+      Debugger:C:\remote_debugger:ro
+    - cms-content-volume:c:\vc-platform\App_Data\cms-content:rw
+  vc-db:
+    environment:
+      ACCEPT_EULA: "Y"
+      sa_password: v!rto_Labs!
+    image: microsoft/mssql-server-windows-express
+    networks:
+      virto: {}
+    ports:
+    - published: 1433
+      target: 1433
+version: '3.4'
+volumes:
+  cms-content-volume: {}
+docker-compose  -f "E:\Data\VirtoCommerce\mvktsk\CustomerReviewsModule\docker-compose.yml" -f "E:\Data\VirtoCommerce\mvktsk\CustomerReviewsModule\docker-compose.override.yml" -f "E:\Data\VirtoCommerce\mvktsk\CustomerReviewsModule\obj\Docker\docker-compose.vs.debug.g.yml" -p dockercompose5837218014806194880 --no-ansi build 
+vc-db uses an image, skipping
+Building customerreviewsmodule.web
+Step 1/7 : FROM virtocommerce/platform/dev
+ ---> fdd27ebbefb9
+Step 2/7 : ARG source
+ ---> Using cache
+ ---> 5314d2ef6e40
+Step 3/7 : RUN mkdir c:\vc-platform\modules\customerreviewsmodule
+ ---> Running in f9393a63056b
