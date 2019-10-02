@@ -5,6 +5,8 @@
 The main idea is to simplify the initial setup process for development environment. This will speed up the onboarding process for new engineers who join to our team.
 Developers would only need to download Docker and Visual Studio, and not have to install external tools and services (IIS, SQL Server, Virto Commerce Platform Manager). Code edits will be done from the Visual Studio as per normal and the changes will be tracked and propagated from host to the container.
 
+This sample contains code only for Virtocommerce Platform Manager web app. Storefront and Theme are not included in this solution.
+
 Virto Commerce Platform Manager web app containerized as 2 services: 1 for web service and 1 for database. It runs as a multi-container app and orchestrate it using Docker Compose.
 
 ![Developing inside a Container](docs/media/developing-inside-container.png)
@@ -70,9 +72,19 @@ Solution consists of 5 logically divided parts (projects):
 Developer should write code for a new module in .Core, .Data and .Web projects as usual in Visual Studio locally on host machine.
 Also developer should write tests for the new module in .Test project.
 
-## How to debug module
+## How to run Virto Commerce Platform Manager
 
-Docker bind Virto Commerce platform manager web app to 80 port. So if you have locally installed IIS server you should to stop it or set for local IIS other than 80 port.
+Docker bind Virto Commerce Platform Manager web app to 80 port. So if you have locally installed IIS server you should to stop it or set for local IIS other than 80 port.
+
+Once images are started, open the Virto Commerce Platform Manager - http://localhost . This will launch the application with preinstalled default modules and give you opportunity to configure sample data.
+
+![Choose sample data](docs/media/screen-sample-data.png)
+
+After the sample data is imported, you can see the Platform Manager UI with a new module installed.
+
+![Virto Commerce Platform Manager](docs/media/screen-platform-manager.png)
+
+## How to debug module
 
 * Build solution locally (press F6 in Visual Studio)
 * Run Virto Commerce Platform Manager in your browser: http:\\localhost for w3wp.exe process will up in the container
