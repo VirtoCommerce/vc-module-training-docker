@@ -74,9 +74,17 @@ Also developer should write tests for the new module in .Test project.
 
 ## How to run Virto Commerce Platform Manager
 
-Docker bind Virto Commerce Platform Manager web app to 80 port. So if you have locally installed IIS server you should to stop it or set for local IIS other than 80 port.
+Docker would bind Virto Commerce Platform Manager web app to port 80 by default. So, if you also have IIS server running locally, consider stopping it or changing the port in order to resolve port conflict.
 
-Once images are started, open the Virto Commerce Platform Manager - http://localhost . This will launch the application with preinstalled default modules and give you opportunity to configure sample data.
+To configure the default IIS website port number:
+
+* Open IIS manager.
+* Select **Default Web Site** from the left tree in IIS manager.
+* Click **Bindings** from the right sidebar to open a dialog box.
+* Select **http** record from the grid and hit Edit.
+* Enter your choice of port number different from 80 in **Port** Text box and hit OK.
+
+Once the containers are started, open Virto Commerce Platform Manager - http://localhost . This will launch the application with preinstalled default modules and give you opportunity to configure sample data.
 
 ![Choose sample data](docs/media/screen-sample-data.png)
 
