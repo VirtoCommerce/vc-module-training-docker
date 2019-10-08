@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Windows</DockerTargetOS>
-    <ProjectGuid>a2221b3a-ba06-4e4c-9e15-1b71da6409ea</ProjectGuid>
+    <ProjectGuid>7e738ae5-e43c-4432-b96e-d2d7668dec63</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>http://{ServiceIPAddress}</DockerServiceUrl>
     <DockerServiceName>customerreviewsmodule.web</DockerServiceName>
@@ -12,7 +12,9 @@
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
+    <None Include="docker-compose.vs.debug.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
     <None Include="docker-compose.yml" />
-    <None Include="Dockerfile" />
   </ItemGroup>
 </Project>
