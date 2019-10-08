@@ -1,5 +1,4 @@
 *
 !obj\Docker\publish\*
 !obj\Docker\empty\
-!startup.ps1
 !InstallLatestModules.ps1
