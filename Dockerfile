@@ -14,10 +14,10 @@ RUN Invoke-WebRequest -OutFile c:\vs_remotetools.exe -Uri https://aka.ms/vs/16/r
 & 'c:\vs_remotetools.exe' /install /quiet /norestart
 
 
-# Download and install VC modules
+# Download and install latest VC modules
 WORKDIR /vc-platform/Modules
-COPY InstallModules.ps1 c:\ps
-RUN powershell.exe -executionpolicy bypass c:\ps\InstallModules.ps1 
+COPY InstallLatestModules.ps1 c:\ps
+RUN powershell.exe -executionpolicy bypass c:\ps\InstallLatestModules.ps1 
 
 
 # Create new module folder
