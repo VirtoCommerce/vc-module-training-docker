@@ -6,7 +6,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CD348575-A621-47F5-A046-840EDDBB1888}</ProjectGuid>
+    <ProjectGuid>{57466DDC-979E-4567-BA1B-E2D5682828DE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CustomerReviewsModule.Tests</RootNamespace>
@@ -112,11 +112,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomerReviewsModule.Core\CustomerReviewsModule.Core.csproj">
-      <Project>{4d6babfc-9474-4da3-8795-d07cd7a7349c}</Project>
+      <Project>{b1d0fb8d-12ae-4b2f-8cb4-7df3e34cd6d3}</Project>
       <Name>CustomerReviewsModule.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\CustomerReviewsModule.Data\CustomerReviewsModule.Data.csproj">
-      <Project>{e8f2728f-126a-4f0b-8bda-e7b72e4019d5}</Project>
+      <Project>{4207dd61-eecc-4373-963a-7cee93b18bfd}</Project>
       <Name>CustomerReviewsModule.Data</Name>
     </ProjectReference>
   </ItemGroup>

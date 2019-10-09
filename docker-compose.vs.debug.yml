@@ -4,4 +4,3 @@ services:
   customerreviewsmodule.web:
     volumes:
       - .\CustomerReviewsModule\CustomerReviewsModule.Web:C:\vc-platform\modules\customerreviewsmodule
-    entrypoint: ["powershell.exe", "c:\\ps\\startup.ps1"]

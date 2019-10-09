@@ -9,9 +9,9 @@ services:
       - ACCEPT_EULA=Y
       - sa_password=v!rto_Labs!
   customerreviewsmodule.web:
-    image: ${DOCKER_REGISTRY-}customerreviewsmodule.web
+    image: ${DOCKER_REGISTRY-}customerreviewsmoduleweb
     build:
-      context: .
+      context: .\CustomerReviewsModule\CustomerReviewsModule.Web
       dockerfile: Dockerfile
     ports:
       - "80:80"
@@ -23,9 +23,4 @@ services:
       - 'VIRTO_APP_SETTING_VirtoCommerce:AutoInstallModuleBundles='
     depends_on:
       - vc-db
-    volumes:
-      - cms-content-volume:c:\vc-platform\App_Data\cms-content
-#    command:
-#      - powershell.exe -executionpolicy bypass c:\ps\ImportCatalog.ps1
-volumes:
-  cms-content-volume:
+
