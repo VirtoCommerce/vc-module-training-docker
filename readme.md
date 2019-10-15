@@ -117,6 +117,18 @@ For debugging a IIS web application select w3wp.exe process:
 
 You can read more about Visual Studio remote debugging in this [article](https://docs.microsoft.com/en-us/visualstudio/debugger/attach-to-running-processes-with-the-visual-studio-debugger?view=vs-2019).
 
+## How to
+
+### How to enable migrations
+
+There is a feature when working with migrations in a solution that contains a docker-compose project. You should run any EF Command with -StartupProject "YourInitialAppProject".
+
+For example to enable migrations use following command
+
+```C#
+enable-migrations -StartupProject "CustomerReviewsModule.Web"
+```
+
 ## Troubleshooting
 
 * How to diagnose [Docker problems](https://docs.docker.com/docker-for-windows/troubleshoot)
