@@ -134,7 +134,7 @@ Exception calling “SetData” with “2” argument(s): “Type ‘Microsoft.V
 not marked as serializable.”
 ```
 
-This is a feature of a solution with docker-compose suport. In order to avoid the error you should run any EF Command with -StartupProject “YourInitialAppProject” parameter.
+This is a feature of a solution with docker-compose project. In order to avoid the error you should specify your initial app project and run any EF Command with -StartupProject “YourInitialAppProject” parameter.
 
 For example to enable migrations use following command
 
