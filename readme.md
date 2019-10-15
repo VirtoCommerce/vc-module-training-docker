@@ -121,11 +121,24 @@ You can read more about Visual Studio remote debugging in this [article](https:/
 
 ### How to enable migrations
 
-There is a feature when working with migrations in a solution that contains a docker-compose project. You should run any EF Command with -StartupProject "YourInitialAppProject".
+When you try to enable migrations by running the command:
+
+```cmd
+enable-migrations –MigrationsDirectory Migrations
+```
+
+in the solution with docker-compose project you get an error:
+
+```cmd
+Exception calling “SetData” with “2” argument(s): “Type ‘Microsoft.VisualStudio.ProjectSystem.VS.Implementation.Package.Automation.OAProject’ in assembly ‘Microsoft.VisualStudio.ProjectSystem.VS.Implementation, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a’ is
+not marked as serializable.”
+```
+
+This is a feature of a solution with docker-compose suport. In order to avoid the error you should run any EF Command with -StartupProject “YourInitialAppProject” parameter.
 
 For example to enable migrations use following command
 
-```C#
+```cmd
 enable-migrations -StartupProject "CustomerReviewsModule.Web"
 ```
 
