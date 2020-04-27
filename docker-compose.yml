@@ -2,25 +2,27 @@ version: '3.4'
 
 services:
   vc-db:
-    image: microsoft/mssql-server-windows-express
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
     ports:
       - "${DOCKER_SQL_PORT:-1433}:1433"
+    expose:  
+      - 1433  
     environment: 
       - ACCEPT_EULA=Y
-      - sa_password=v!rto_Labs!
-  customerreviewsmodule.web:
-    image: ${DOCKER_REGISTRY-}customerreviewsmoduleweb
+      - MSSQL_PID=Express
+      - SA_PASSWORD=v!rto_Labs!
+
+  virtocommerce.trainingmodule.web:
+    image: ${DOCKER_REGISTRY-}virtocommercetrainingmoduleweb
     build:
-      context: .\CustomerReviewsModule\CustomerReviewsModule.Web
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
+      context: .
+      dockerfile: src/VirtoCommerce.TrainingModule.Web/Dockerfile
     environment:
-      - VIRTO_CONN_STR_VIRTOCOMMERCE=Data Source=vc-db;Initial Catalog=VirtoCommerce2;Persist Security Info=True;User ID=sa;Password=v!rto_Labs!;MultipleActiveResultSets=True;Connect Timeout=30;
-      - VIRTO_CONN_STR_AssetsConnectionString=provider=LocalStorage;rootPath=~/App_Data/Assets;publicUrl=http://localhost/assets
-      - 'VIRTO_APP_SETTING_VirtoCommerce:EnableBundlesOptimizations=false'
-      - 'VIRTO_APP_SETTING_VirtoCommerce:Security:SuppressForcingCredentialsChange=true'
-      - 'VIRTO_APP_SETTING_VirtoCommerce:AutoInstallModuleBundles='
+      - Assets:FileSystem:PublicUrl=https://localhost:${DOCKER_PLATFORM_PORT:-8090}/assets/
+      - Content:FileSystem:PublicUrl=https://localhost:${DOCKER_PLATFORM_PORT:-8090}/cms-content/
+      - VirtoCommerce:AllowInsecureHttp=true
+    ports:
+      - "${DOCKER_PLATFORM_PORT:-8090}:80"
     depends_on:
       - vc-db
-
+    restart: unless-stopped

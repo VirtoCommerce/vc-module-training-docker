@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+    <id>VirtoCommerce.TrainingModule</id>
+    <version>1.0.0</version>
+    <version-tag></version-tag>
+    <platformVersion>3.0.0</platformVersion>
+    <dependencies>
+<!--        <dependency id="VirtoCommerce.Core" version="3.0.0" /> -->
+    </dependencies>
+
+    <title>VirtoCommerce Training extension module</title>
+    <description>VirtoCommerce Training extension module</description>
+
+    <authors>
+        <author>Jon Doe</author>
+    </authors>
+    <owners>
+        <owner>VirtoCommerce</owner>
+    </owners>
+
+    <assemblyFile>VirtoCommerce.TrainingModule.Web.dll</assemblyFile>
+    <moduleType>VirtoCommerce.TrainingModule.Web.Module, VirtoCommerce.TrainingModule.Web</moduleType>
+
+    <releaseNotes>First version.</releaseNotes>
+    <copyright>Copyright © 2020 VirtoCommerce. All rights reserved</copyright>
+    <tags>extension module</tags>
+
+</module>
+
+
