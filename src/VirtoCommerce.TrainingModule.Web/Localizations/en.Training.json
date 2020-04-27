@@ -1,0 +1,28 @@
+{
+    "trainingModule": {
+        "blades": {
+            "hello-world": {
+                "title": "Hello world blade"
+            }
+        }
+    },
+    "permissions": {
+        "trainingModule:access": "Open TrainingModule menu",
+        "trainingModule:create": "Create TrainingModule related data",
+        "trainingModule:read": "View TrainingModule related data",
+        "trainingModule:update": "Update TrainingModule related data",
+        "trainingModule:delete": "Delete TrainingModule related data"
+    },
+    "settings": {
+        "TrainingModule": {
+            "TrainingModulePassword": {
+                "title": "TrainingModule Password",
+                "description": "TrainingModule Password setting"
+            },
+            "TrainingModuleEnabled": {
+                "title": "TrainingModule Enabled",
+                "description": "TrainingModule Enabled setting"
+            }
+        }
+    }
+}
