@@ -21,7 +21,7 @@ for module in modules:
             moduleId = module["Id"]
             destinationPath = moduleId
             for version in module["Versions"]:
-                if '' == version["VersionTag"]:
+                if version["VersionTag"] in ["", "preview"]:
                     packageUrl = version["PackageUrl"]
                     zipData = getZipData(packageUrl)
                     zipRef = zipfile.ZipFile(io.BytesIO(zipData))

@@ -3,7 +3,7 @@
 ## Overview
 
 The main idea is to simplify the initial setup process for development environment. This will speed up the onboarding process for new engineers who join to our team.
-Developers would only need to download Docker and Visual Studio, and not have to install external tools and services (IIS, SQL Server, Virto Commerce Platform Manager). Code edits will be done from the Visual Studio as per normal and the changes will be tracked and propagated from host to the container.
+Developers would only need to download Docker and Visual Studio, and not have to install external tools and services (SQL Server, Virto Commerce Platform Manager). Code edits will be done from the Visual Studio as per normal and the changes will be tracked and propagated from host to the container.
 
 This sample contains code only for Virtocommerce Platform Manager web app. Storefront and Theme are not included in this solution.
 
@@ -11,11 +11,13 @@ Virto Commerce Platform Manager web app containerized as 2 services: 1 for web s
 
 ![Developing inside a Container](docs/media/developing-inside-container.png)
 
-Web service container based on *virtocommerce/platform* latest image. Additionally Web service Docker file contains code for download and install Virto Commerce modules and [Visual Studio Remote Tool](https://visualstudio.microsoft.com/downloads#remote-tools-for-visual-studio-2019) to enabling the debug of a .Net Framework app.
+Web service container based on *virtocommerce/platform* latest Linux image. Additionally Web service Docker file contains code for download and install Virto Commerce modules.
 
-When the Web service container is started, then the *Virto Commerce Platform Manager* and *msvsmon.exe* is executed on the container as well, because *msvsmon.exe* and *IIS* is defined as an entrypoint. *Msvsmon.exe* is interacting with Visual Studio and therefore developer is able to set a breakpoint and debug the code.
+To enabling the debug of a .Net Core app in a Linux container Visual Studio downloads vsdbg and maps it to the container. For information on *vsdbg.exe*, see [Offroad debugging of .NET Core on Linux and OSX from Visual Studio](https://github.com/Microsoft/MIEngine/wiki/Offroad-Debugging-of-.NET-Core-on-Linux---OSX-from-Visual-Studio).
 
-Developer write and build code for a new module in Visual Studio locally on host machine. To ensure that any code edits on host machine are automatically propagated to the container, folder with built module on host machine is mapped to c:\vc-platform\modules folder in the container. This is only possible through bind mounting, which works similar to a *mklink* mount in Windows. When a path in the host mounted to a path in the container, the contents of the host directory will completely overwrite whatever is in the container directory, regardless of whether the container directory has files which were not present in the host directory at mount time. The result is that the container directory will be an exact snapshot of the host directory. This makes the development experience feel more natural.
+When the Web service container is started, then the *Virto Commerce Platform Manager* and *vsdbg.exe* is executed on the container as well. *Vsdbg.exe* is interacting with Visual Studio and therefore developer is able to set a breakpoint and debug the code.
+
+Developer write and build code for a new module in Visual Studio locally on host machine. To ensure that any code edits on host machine are automatically propagated to the container, folder with built module on host machine is automatically mapped to the `/app` folder in the container. This is only possible through bind mounting. When a path in the host mounted to a path in the container, the contents of the host directory will completely overwrite whatever is in the container directory, regardless of whether the container directory has files which were not present in the host directory at mount time. The result is that the container directory will be an exact snapshot of the host directory. This makes the development experience feel more natural. In order for the developed module to be available in the *Virto Commerce Platform* the contents of the `/app` folder should be placed to the `/opt/virtocommerce/platform/Modules/VirtoCommerce.TrainingModule` folder. This is done by the *ln* mount command in Linux.
 
 ## Prerequisites
 
@@ -47,7 +49,7 @@ Current solution based on [template](https://marketplace.visualstudio.com/items?
 
 ## How to build and run Docker containers
 
-When you open solution [Visual Studio tools for Docker](https://docs.microsoft.com/en-us/visualstudio/containers/overview?view=vs-2019) automatically build and up docker-compose. First start can take long time for downloading base images (*microsoft/mssql-server-windows-express*, *mcr.microsoft.com/dotnet/framework/aspnet*, *virtocommerce/platform*) and building image from Docker file.
+When you open solution [Visual Studio tools for Docker](https://docs.microsoft.com/en-us/visualstudio/containers/overview?view=vs-2019) automatically build and up docker-compose. First start can take long time for downloading base images (*mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04*, *mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim*, *virtocommerce/platform*) and building image from Docker file.
 
 [Visual Studio tools for Docker](https://docs.microsoft.com/en-us/visualstudio/containers/overview?view=vs-2019) monitor changes in docker-compose.yml, docker-compose.override.yml, docker-compose.vs.debug.yml, Dockerfile and rebuild docker images automatically if files was changed.
 
@@ -74,16 +76,6 @@ Also developer should write tests for the new module in .Test project.
 
 ## How to run Virto Commerce Platform Manager
 
-Docker would bind Virto Commerce Platform Manager web app to port 80 by default. So, if you also have IIS server running locally, consider stopping it or changing the port in order to resolve port conflict.
-
-To configure the default IIS website port number:
-
-* Open IIS manager.
-* Select **Default Web Site** from the left tree in IIS manager.
-* Click **Bindings** from the right sidebar to open a dialog box.
-* Select **http** record from the grid and hit Edit.
-* Enter your choice of port number different from 80 in **Port** Text box and hit OK.
-
 Once the containers are started, open Virto Commerce Platform Manager - http://localhost:8090 . This will launch the application with preinstalled default modules and give you opportunity to configure sample data.
 
 ![Choose sample data](docs/media/screen-sample-data.png)
@@ -100,7 +92,7 @@ After the sample data is imported, you can see the Platform Manager UI with a ne
 
 ![Menu](docs/media/screen-attach-to-process-menu.png)
 
-* Chose **Connection type** **Remote** in opened window and press the **Find** button to find the remote connection:
+* Chose **Connection type** **Docker(Linux Container)** in opened window and press the **Find** button to find the remote connection:
 
 ![Find remote](docs/media/screen-attach-to-process-window.png)
 
@@ -108,14 +100,13 @@ The screenshot below shows the detected containers:
 
 ![Remote container](docs/media/screen-remote-connections.png)
 
-* Select container and press **Select** button.
+* Select **VirtoCommerce.TrainingModule.Web** container and press **Ok** button.
 
-* Once the container has been selected, then the running process can be attached.
-For debugging a IIS web application select w3wp.exe process:
+* Once the container has been selected, then the running process can be attached. For debugging a .Net Core application select `dotnet` process:
 
 ![Attach](docs/media/screen-attach-to-process-process-selection.png)
 
-You can read more about Visual Studio remote debugging in this [article](https://docs.microsoft.com/en-us/visualstudio/debugger/attach-to-running-processes-with-the-visual-studio-debugger?view=vs-2019).
+You can read more about Visual Studio remote debugging in the [Offroad debugging of .NET Core on Linux and OSX from Visual Studio](https://github.com/Microsoft/MIEngine/wiki/Offroad-Debugging-of-.NET-Core-on-Linux---OSX-from-Visual-Studio) article.
 
 ## How to
 
