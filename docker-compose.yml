@@ -18,6 +18,7 @@ services:
       context: .
       dockerfile: src/VirtoCommerce.TrainingModule.Web/Dockerfile
     environment:
+      - ConnectionStrings:VirtoCommerce=Data Source=vc-db;Initial Catalog=VirtoCommerce3docker;Persist Security Info=True;User ID=sa;Password=v!rto_Labs!;MultipleActiveResultSets=False;
       - Assets:FileSystem:PublicUrl=https://localhost:${DOCKER_PLATFORM_PORT:-8090}/assets/
       - Content:FileSystem:PublicUrl=https://localhost:${DOCKER_PLATFORM_PORT:-8090}/cms-content/
       - VirtoCommerce:AllowInsecureHttp=true
