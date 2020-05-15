@@ -87,7 +87,6 @@ After the sample data is imported, you can see the Platform Manager UI with a ne
 ## How to debug module
 
 * Build solution locally (press F6 in Visual Studio)
-* Run Virto Commerce Platform Manager in your browser: http://localhost for w3wp.exe process will up in the container
 * Within Visual Studio, select the **Attach to Process** action in the Debug window:
 
 ![Menu](docs/media/screen-attach-to-process-menu.png)
