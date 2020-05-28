@@ -2,31 +2,33 @@
 
 ## Overview
 
-The main idea is to simplify the initial setup process for development environment. This will speed up the onboarding process for new engineers who join to our team.
-Developers would only need to download Docker and Visual Studio, and not have to install external tools and services (IIS, SQL Server, Virto Commerce Platform Manager). Code edits will be done from the Visual Studio as per normal and the changes will be tracked and propagated from host to the container.
+The main idea is to simplify the initial setup process for Virto Commerce (VC) module development environment. This will speed up the onboarding process for new engineers who join our team.
+Developers would only need to install Docker and Visual Studio, but not external tools / services (SQL Server, VC Platform). Coding is done in Visual Studio as usual, and the changes would be tracked and propagated from host to the container.
 
-This sample contains code only for Virtocommerce Platform Manager web app. Storefront and Theme are not included in this solution.
+This sample contains code only for VC Platform Manager web app. _Storefront_ and _Theme_ are not included in this solution.
 
-Virto Commerce Platform Manager web app containerized as 2 services: 1 for web service and 1 for database. It runs as a multi-container app and orchestrate it using Docker Compose.
+VC Platform Manager web app was containerized as 2 services: 1 for web service and 1 for database. It's run as a multi-container app and orchestrated by using _Docker Compose_.
 
 ![Developing inside a Container](docs/media/developing-inside-container.png)
 
-Web service container based on *virtocommerce/platform* latest image. Additionally Web service Docker file contains code for download and install Virto Commerce modules and [Visual Studio Remote Tool](https://visualstudio.microsoft.com/downloads#remote-tools-for-visual-studio-2019) to enabling the debug of a .Net Framework app.
+Web service container is based on *virtocommerce/platform* latest Linux image. Additionally, Web service Docker file contains code for downloading and installing common VC modules.
 
-When the Web service container is started, then the *Virto Commerce Platform Manager* and *msvsmon.exe* is executed on the container as well, because *msvsmon.exe* and *IIS* is defined as an entrypoint. *Msvsmon.exe* is interacting with Visual Studio and therefore developer is able to set a breakpoint and debug the code.
+In order to enable the debugging of a .Net Core app in a Linux container, Visual Studio downloads _vsdbg_ and maps it to the container. More information on *vsdbg.exe*: [Offroad debugging of .NET Core on Linux and OSX from Visual Studio](https://github.com/Microsoft/MIEngine/wiki/Offroad-Debugging-of-.NET-Core-on-Linux---OSX-from-Visual-Studio).
 
-Developer write and build code for a new module in Visual Studio locally on host machine. To ensure that any code edits on host machine are automatically propagated to the container, folder with built module on host machine is mapped to c:\vc-platform\modules folder in the container. This is only possible through bind mounting, which works similar to a *mklink* mount in Windows. When a path in the host mounted to a path in the container, the contents of the host directory will completely overwrite whatever is in the container directory, regardless of whether the container directory has files which were not present in the host directory at mount time. The result is that the container directory will be an exact snapshot of the host directory. This makes the development experience feel more natural.
+When the Web service container is started, the *VC Platform* instance and *vsdbg.exe* are activated on the container as well. *Vsdbg.exe* is interacting with Visual Studio and therefore developer is able to set the breakpoints and debug the code.
+
+The Developer writes and builds code for a new module in Visual Studio locally, on host machine. In order to ensure that any code edits on host machine are automatically propagated to the container, folder with built module on host machine is automatically mapped to `/app` folder in the container. This is only possible through bind mounting. When a path in the host is mounted to a path in the container, the contents of the host directory will completely overwrite whatever is in the container directory, regardless of whether the container directory has files which were not present in the host directory at mount time. The result is that the container directory will be an exact snapshot of the host directory. This makes the development experience feel more natural. In order for the developed module to be available in *VC Platform* the contents of the `/app` folder should be placed to the `/opt/virtocommerce/platform/Modules/VirtoCommerce.TrainingModule` folder. This is done by the *ln* mount command in Linux.
 
 ## Prerequisites
 
 * You need to have some basic understanding of [Docker](https://docs.docker.com/get-started/), [Docker Compose](https://docs.docker.com/compose/gettingstarted/), and the key terms used in the ecosystem.
-* Installed [Docker desktop for Windows](https://docs.docker.com/docker-for-windows/install/) on your machine.
+* [Docker Desktop for Windows](https://docs.docker.com/docker-for-windows/install/) installed on your machine.
 
 ## How to install Docker for Windows
 
 * For Docker installation, first review the information at Docker for Windows: [What to know before you install](https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install)
-* Install [Docker desktop for Windows](https://docs.docker.com/docker-for-windows/install/) on your machine
-* During installation you'll need to chose Windows as operating system used inside your containers
+* Install [Docker Desktop for Windows](https://docs.docker.com/docker-for-windows/install/) on your machine
+* During installation you'll need to choose Linux as operating system used inside your containers
 
 ## How to use
 
@@ -36,9 +38,9 @@ Developer write and build code for a new module in Visual Studio locally on host
 1. Write code for new module
 1. Build solution
 
-Current solution based on [template](https://marketplace.visualstudio.com/items?itemName=Virto-Commerce.VirtoCommerceModuleTemplates) for a new Virto Commerce module creation. To template solution added support for Docker Compose to a Visual Studio 2019 project, it adds the following elements in the solution:
+The initial solution was generated using [Virto Commerce 3.x Module Template](https://marketplace.visualstudio.com/items?itemName=Virto-Commerce.VirtoCommerce3ModuleTemplates) for Visual Studio.
 
-* New Visual Studio Project named “docker-compose” with the following files:
+Then, the "_Container orchestrator support_" (_Docker Compose_ for _Linux_) was added directly from Visual Studio IDE. New Visual Studio project named "docker-compose" with the following files was generated:
   * docker-compose.yml
   * docker-compose.override.yml
   * docker-compose.vs.debug.yml
@@ -47,17 +49,17 @@ Current solution based on [template](https://marketplace.visualstudio.com/items?
 
 ## How to build and run Docker containers
 
-When you open solution [Visual Studio tools for Docker](https://docs.microsoft.com/en-us/visualstudio/containers/overview?view=vs-2019) automatically build and up docker-compose. First start can take long time for downloading base images (*microsoft/mssql-server-windows-express*, *mcr.microsoft.com/dotnet/framework/aspnet*, *virtocommerce/platform*) and building image from Docker file.
+When the solution is opened in IDE, [Visual Studio tools for Docker](https://docs.microsoft.com/en-us/visualstudio/containers/overview?view=vs-2019) does automatically "_build_ and _up_" with _docker-compose_. First time start can take longer, as the base images (*mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04*, *mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim*, *virtocommerce/platform*) are downloaded and new image is built from Dockerfile.
 
-[Visual Studio tools for Docker](https://docs.microsoft.com/en-us/visualstudio/containers/overview?view=vs-2019) monitor changes in docker-compose.yml, docker-compose.override.yml, docker-compose.vs.debug.yml, Dockerfile and rebuild docker images automatically if files was changed.
+_Visual Studio tools for Docker_ monitors docker-compose.yml, docker-compose.override.yml, docker-compose.vs.debug.yml, Dockerfile and rebuilds docker images automatically, when the files change.
 
-Each time you open the solution, Visual Studio automatically creates containers for Web service and database service.
+Each time the solution is opened in Visual Studio, the containers for Web service and database are recreated.
 
-You can look for building images and starting up the containers in the output window by choosing Container tools in the drop-down menu.
+You track see the progress for building images and starting up the containers in the "Output" window. Just choose "Container Tools" in "output from" menu:
 
 ![container-tools-window](docs/media/container-tools-window.png)
 
-When the solution closes, the created containers are automatically deleted. This means that all changes were made to the database or to the Virto Commerce Platform Manager configuration during application debugging will be lost after the solution is closed.
+**When the solution is closed, the created containers are deleted automatically. Thus, all changes made to the database or to VC Platform Manager configuration during debugging, will be lost.**
 
 ## How to write the code
 
@@ -66,25 +68,15 @@ Solution consists of 5 logically divided parts (projects):
 * .Core – this is where keep the models and abstractions of Virto Commerce module services
 * .Data – here you can find all the service implementations, repositories, entity models, migration data and configurations
 * .Web – contains the module definition, WEB API, Scripts and Localization resources
-* .Test – for testing the service and repository layer methods with Unit test
+* .Tests – for testing the service and repository layer methods with Unit test
 * docker-compose - orchestration support for solution
 
 Developer should write code for a new module in .Core, .Data and .Web projects as usual in Visual Studio locally on host machine.
-Also developer should write tests for the new module in .Test project.
+Also developer should write tests for the new module in .Tests project.
 
 ## How to run Virto Commerce Platform Manager
 
-Docker would bind Virto Commerce Platform Manager web app to port 80 by default. So, if you also have IIS server running locally, consider stopping it or changing the port in order to resolve port conflict.
-
-To configure the default IIS website port number:
-
-* Open IIS manager.
-* Select **Default Web Site** from the left tree in IIS manager.
-* Click **Bindings** from the right sidebar to open a dialog box.
-* Select **http** record from the grid and hit Edit.
-* Enter your choice of port number different from 80 in **Port** Text box and hit OK.
-
-Once the containers are started, open Virto Commerce Platform Manager - http://localhost:8090 . This will launch the application with preinstalled default modules and give you opportunity to configure sample data.
+Once the containers are started, open VC Platform Manager - http://localhost:8090 . This will launch the application with preinstalled default modules and give you opportunity to configure sample data.
 
 ![Choose sample data](docs/media/screen-sample-data.png)
 
@@ -95,12 +87,11 @@ After the sample data is imported, you can see the Platform Manager UI with a ne
 ## How to debug module
 
 * Build solution locally (press F6 in Visual Studio)
-* Run Virto Commerce Platform Manager in your browser: http:\\localhost for w3wp.exe process will up in the container
 * Within Visual Studio, select the **Attach to Process** action in the Debug window:
 
 ![Menu](docs/media/screen-attach-to-process-menu.png)
 
-* Chose **Connection type** **Remote** in opened window and press the **Find** button to find the remote connection:
+* Chose **Connection type** **Docker(Linux Container)** in opened window and press the **Find** button to find the remote connection:
 
 ![Find remote](docs/media/screen-attach-to-process-window.png)
 
@@ -108,14 +99,13 @@ The screenshot below shows the detected containers:
 
 ![Remote container](docs/media/screen-remote-connections.png)
 
-* Select container and press **Select** button.
+* Select **VirtoCommerce.TrainingModule.Web** container and press **Ok** button.
 
-* Once the container has been selected, then the running process can be attached.
-For debugging a IIS web application select w3wp.exe process:
+* Once the container has been selected, then the running process can be attached. For debugging a .Net Core application select `dotnet` process:
 
 ![Attach](docs/media/screen-attach-to-process-process-selection.png)
 
-You can read more about Visual Studio remote debugging in this [article](https://docs.microsoft.com/en-us/visualstudio/debugger/attach-to-running-processes-with-the-visual-studio-debugger?view=vs-2019).
+You can read more about Visual Studio remote debugging in the [Offroad debugging of .NET Core on Linux and OSX from Visual Studio](https://github.com/Microsoft/MIEngine/wiki/Offroad-Debugging-of-.NET-Core-on-Linux---OSX-from-Visual-Studio) article.
 
 ## How to
 
