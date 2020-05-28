@@ -5,6 +5,13 @@
 The main idea is to simplify the initial setup process for Virto Commerce (VC) module development environment. This will speed up the onboarding process for new engineers who join our team.
 Developers would only need to install Docker and Visual Studio, but not external tools / services (SQL Server, VC Platform). Coding is done in Visual Studio as usual, and the changes would be tracked and propagated from host to the container.
 
+## Specification
+* Docker OS: Linux.
+* [Virto Commerce 3.0.0](https://github.com/VirtoCommerce/vc-platform).
+* Virto Commerce Modules will be installed from https://github.com/VirtoCommerce/vc-modules/blob/master/modules_v3.json.
+* VirtoCommerce.TrainingModule from Source.
+
+## Description
 This sample contains code only for VC Platform Manager web app. _Storefront_ and _Theme_ are not included in this solution.
 
 VC Platform Manager web app was containerized as 2 services: 1 for web service and 1 for database. It's run as a multi-container app and orchestrated by using _Docker Compose_.
