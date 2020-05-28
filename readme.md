@@ -20,11 +20,10 @@ When the Web service container is started, the *VC Platform* instance and *vsdbg
 The Developer writes and builds code for a new module in Visual Studio locally, on host machine. In order to ensure that any code edits on host machine are automatically propagated to the container, folder with built module on host machine is automatically mapped to `/app` folder in the container. This is only possible through bind mounting. When a path in the host is mounted to a path in the container, the contents of the host directory will completely overwrite whatever is in the container directory, regardless of whether the container directory has files which were not present in the host directory at mount time. The result is that the container directory will be an exact snapshot of the host directory. This makes the development experience feel more natural. In order for the developed module to be available in *VC Platform* the contents of the `/app` folder should be placed to the `/opt/virtocommerce/platform/Modules/VirtoCommerce.TrainingModule` folder. This is done by the *ln* mount command in Linux.
 
 ## Specification
-* Docker OS: Linux
-* [Virto Commerce 3.0.0](https://github.com/VirtoCommerce/vc-platform)
-* Virto Commerce Modules will be isntalled on first run. Modify Dockerfile if you want to install specific modules by default.
-* VirtoCommerce.TrainingModule
-
+* Docker OS: Linux.
+* [Virto Commerce 3.0.0](https://github.com/VirtoCommerce/vc-platform).
+* Virto Commerce Modules will be installed from https://github.com/VirtoCommerce/vc-modules/blob/master/modules_v3.json.
+* VirtoCommerce.TrainingModule from Source.
 
 ## Prerequisites
 
