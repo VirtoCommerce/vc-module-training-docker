@@ -17,6 +17,13 @@ When the Web service container is started, then the *Virto Commerce Platform Man
 
 Developer write and build code for a new module in Visual Studio locally on host machine. To ensure that any code edits on host machine are automatically propagated to the container, folder with built module on host machine is mapped to c:\vc-platform\modules folder in the container. This is only possible through bind mounting, which works similar to a *mklink* mount in Windows. When a path in the host mounted to a path in the container, the contents of the host directory will completely overwrite whatever is in the container directory, regardless of whether the container directory has files which were not present in the host directory at mount time. The result is that the container directory will be an exact snapshot of the host directory. This makes the development experience feel more natural.
 
+## Specification
+* Docker OS: Linux
+* [Virto Commerce 3.0.0](https://github.com/VirtoCommerce/vc-platform)
+* Virto Commerce Modules will be isntalled on first run. Modify Dockerfile if you want to install specific modules by default.
+* VirtoCommerce.TrainingModule
+
+
 ## Prerequisites
 
 * You need to have some basic understanding of [Docker](https://docs.docker.com/get-started/), [Docker Compose](https://docs.docker.com/compose/gettingstarted/), and the key terms used in the ecosystem.
