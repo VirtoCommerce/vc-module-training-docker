@@ -12,9 +12,9 @@ RUN mkdir /opt/virtocommerce/ \
 
 RUN ln -s /app /opt/virtocommerce/platform/Modules/VirtoCommerce.TrainingModule
 
-RUN wget -q "https://github.com/VirtoCommerce/vc-platform/releases/download/3.0.0-rc.5.250/VirtoCommerce.Platform.3.0.0-rc.5.250.zip" \
-    && unzip -q VirtoCommerce.Platform.3.0.0-rc.5.250.zip -d /opt/virtocommerce/platform \
-    && rm VirtoCommerce.Platform.3.0.0-rc.5.250.zip
+RUN wget -q "https://github.com/VirtoCommerce/vc-platform/releases/download/3.0.0/VirtoCommerce.Platform.3.0.0.zip" \
+    && unzip -q VirtoCommerce.Platform.3.0.0.zip -d /opt/virtocommerce/platform \
+    && rm VirtoCommerce.Platform.3.0.0.zip
 
 WORKDIR /opt/virtocommerce/platform/Modules
 
