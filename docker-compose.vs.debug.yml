@@ -1,6 +1,10 @@
 version: '3.4'
 
 services:
-  customerreviewsmodule.web:
-    volumes:
-      - .\CustomerReviewsModule\CustomerReviewsModule.Web:C:\vc-platform\modules\customerreviewsmodule
+  virtocommerce.trainingmodule.web:
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      com.microsoft.visualstudio.debuggee.arguments: " --additionalProbingPath /root/.nuget/packages --additionalProbingPath /root/.nuget/fallbackpackages  \"VirtoCommerce.Platform.Web.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/opt/virtocommerce/platform/"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    entrypoint: dotnet VirtoCommerce.Platform.Web.dll
