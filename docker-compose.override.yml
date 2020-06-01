@@ -1,6 +1,9 @@
 version: '3.4'
 
-networks:
-  default:
-    external:
-      name: nat
+services:
+  virtocommerce.trainingmodule.web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "80"
